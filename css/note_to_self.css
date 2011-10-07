@@ -1,0 +1,64 @@
+#note-to-self {
+  background-color: #CCC;
+  border: 1px solid #999;
+  padding: 15px 15px 15px 0;
+  position: fixed;
+  right: -320px;
+  top: 200px;
+  z-index: 1000000;
+  -moz-box-shadow: -5px 5px 15px #ccc;
+  -webkit-box-shadow: -5px 5px 15px #ccc;
+  box-shadow: -5px 5px 15px #ccc;
+}
+
+#note-to-self.visible {
+  right: 0;
+}
+
+#note-to-self .note-message {
+  display: none;
+  left: 31px;
+  margin: 10px 20px 0;
+  padding: 10px 0 10px 20px;
+  position: absolute;
+  text-align: center;
+  width: 230px;
+}
+
+#note-to-self .note-saving {
+  background: url('../images/ajax-loader.gif') no-repeat scroll 0 0 transparent;
+  display: none;
+  height: 32px;
+  left: 155px;
+  position: absolute;
+  top: 65px;
+  width: 32px;
+}
+
+#note-to-self .note-tab {
+  background: url('../images/tab.png') no-repeat scroll 0 0 transparent;
+  cursor: pointer;
+  float: left;
+  height: 120px;
+  padding-right: 10px;
+  width: 20px;
+}
+
+#note-to-self .note-tab.visible {
+  background-position: -25px 0;
+}
+
+#note-to-self .note-text {
+  float: left;
+  width: 300px;
+}
+
+#note-to-self .note-text textarea {
+  height: 150px;
+}
+
+#note-to-self .note-button {
+  clear: left;
+  float: right;
+  margin-top: 5px;
+}

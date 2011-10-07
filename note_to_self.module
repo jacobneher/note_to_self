@@ -1,0 +1,102 @@
+<?php
+define('POST_NOTE_TO_SELF', 'post note to self');
+
+/**
+ * Implements hook_permission().
+ */
+function note_to_self_permission() {
+  return array(
+    POST_NOTE_TO_SELF => array(
+      'title' => 'Allow user to post note to self.',
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ * Define menu items and page callbacks.
+ * 
+ * @return
+ *   An array of menu items.
+ */
+function note_to_self_menu() {
+  $items = array();
+  $items['note-to-self/save'] = array(
+    'title'            => 'Save Note to Self',
+    'page callback'    => 'note_to_self_page_callback',
+    'page arguments'   => array(2),
+    'access arguments' => array(POST_NOTE_TO_SELF),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_page_build().
+ */
+function note_to_self_page_build(&$page) {
+  if (user_access(POST_NOTE_TO_SELF)) {
+    drupal_add_js(drupal_get_path('module', 'note_to_self') . '/js/note_to_self.js');
+    drupal_add_css(drupal_get_path('module', 'note_to_self') . '/css/note_to_self.css');
+    $html = '
+    <div id="note-to-self">
+      <div class="note-message messages status"></div>
+      <div class="note-saving"></div>
+      <div class="note-tab"></div>
+      <div class="note-text">
+        <textarea>' . note_to_self_get_note() . '</textarea>
+      </div>
+      <div class="note-button">
+        <input type="button" value="Save">
+      </div>
+    </div>';
+    
+    $page['page_bottom']['note_to_self'] = array(
+      '#markup' => $html,
+    );
+  }
+}
+
+
+function note_to_self_get_note() {
+  global $user;
+  
+  $result = db_query("SELECT note
+                     FROM {note_to_self}
+                     WHERE uid = :uid", array(':uid' => $user->uid))->fetchField();
+  
+  if ($result) {
+    return $result;
+  }
+  
+  return FALSE;
+}
+
+function note_to_self_page_callback() {
+  global $user;
+  
+  $note = $_REQUEST['note'];
+  
+  $result = db_query("SELECT *
+               FROM note_to_self
+               WHERE uid = :uid", array(':uid' => $user->uid))->fetchField();
+  if ($result) {
+    db_update('note_to_self')
+      ->fields(array(
+        'note' => $note,
+      ))
+      ->condition('uid', $user->uid)
+      ->execute();
+      
+    print 'Your note has been updated!';
+  }
+  else {
+    db_insert('note_to_self')
+      ->fields(array(
+        'uid'  => $user->uid,
+        'note' => $note,
+      ))
+      ->execute();
+      
+    print 'Your note has been saved!';
+  }
+}

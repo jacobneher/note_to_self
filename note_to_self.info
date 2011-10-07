@@ -1,0 +1,4 @@
+name = Note to Self
+description = Allow users to create a note-to-self.
+core = 7.x
+version = 7.x-1.0

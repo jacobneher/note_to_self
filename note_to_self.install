@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function note_to_self_schema() {
+  $schema = array(
+    'note_to_self' => array(
+      'fields' => array(
+        'note_id' => array(
+          'type' => 'serial',
+          'not null' => TRUE,
+          'description' => 'note id.',
+        ),
+        'uid' => array(
+          'type' => 'int',
+          'not null' => TRUE,
+          'description' => 'uid of user.',
+        ),
+        'note' => array(
+          'type' => 'text',
+          'size' => 'big',
+          'not null' => TRUE,
+          'description' => 'Note created by user.',
+        ),
+      ),
+      'primary key' => array('note_id'),
+    ),
+  );
+  return $schema;
+}
